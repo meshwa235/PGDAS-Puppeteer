@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/meshwa235/PGDAS#readme",
   "dependencies": {
+    "playwright": "^1.8.1",
     "puppeteer": "^7.0.4"
   }
 }
-

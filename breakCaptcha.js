@@ -1,4 +1,4 @@
-let {info} = require("./monthlyStatement");
+let {info} = require("./PA");
 const Image = async (url, page) => {
   await page.goto(url, { waitUntil: 'load' });
   // Method to ensure that the element is loaded

@@ -1,0 +1,22 @@
+{
+  "name": "pgdas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webScrapping.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meshwa235/PGDAS.git"
+  },
+  "author": "meshwa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meshwa235/PGDAS/issues"
+  },
+  "homepage": "https://github.com/meshwa235/PGDAS#readme",
+  "dependencies": {
+    "puppeteer": "^7.0.4"
+  }
+}

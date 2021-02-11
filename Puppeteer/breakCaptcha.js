@@ -1,3 +1,5 @@
+let fs = require("fs");
+let globalCrackingIndex = 0;
 let {info} = require("./PA");
 const Image = async (url, page) => {
   await page.goto(url, { waitUntil: 'load' });
@@ -5,9 +7,9 @@ const Image = async (url, page) => {
   await page.waitForSelector('#captcha-img');
   const logo = await page.$('#captcha-img');
   await logo.screenshot({
-    path: 'pic.png'
+    path: 'pic.png' 
   });
-  let base64 = await page.evaluate(() => {
+  let base64 = await page.evaluate(() => {  
     return JSON.parse(xmlhttp_init.responseText).Dados;
   });
   return base64;
@@ -15,6 +17,7 @@ const Image = async (url, page) => {
 
 async function solver(url, base64, pages, browser, CRED) {
   var request = require('request');
+  globalCrackingIndex+=1;
   var options = {
     'method': 'POST',
     'url': 'https://api.xcount.com.br/resolverCaptcha',
@@ -42,6 +45,8 @@ async function solver(url, base64, pages, browser, CRED) {
       await solver(url, image, pages, browser, CRED);
     }
     else{
+      let date = new Date();
+      fs.appendFileSync("./Puppeteer/cracking.txt",`${date.toString()} : ${globalCrackingIndex}->No of attempts by solver; \n`);
       await info(newurl,pages,browser);
     }
   });

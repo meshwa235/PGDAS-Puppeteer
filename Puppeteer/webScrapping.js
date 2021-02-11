@@ -12,7 +12,7 @@ async function scrape() {
   });
   let image = await Image(url, pages);
   await solver(url, image, pages, browser, CRED);
-
+ 
 }
 scrape();
 

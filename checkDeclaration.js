@@ -1,12 +1,30 @@
-async function check(url, page, browser) {
+async function checkDeclaration(url, page, browser) {
     try {
-        await page.evaluate(() => {
-            let arr = document.querySelector('body > div.wrapper > div > div:nth-child(2) > div.col-md-10.col-sm-9 > div.container-fluid > div > div > div:nth-child(2) > table>tbody').innerText;
+        await page.waitForTimeout(5000);
+        let arrayj = await page.evaluate(async () => {
+            let tbody = document.querySelector('body > div.wrapper > div > div:nth-child(2) > div.col-md-10.col-sm-9 > div.container-fluid > div > div > div:nth-child(2) > table>tbody');
+            console.log(tbody.childrenElementCount);
+            let arrOfChildren = tbody.children;
+            let arr = [];
+            for (let i = 0; i < arrOfChildren.length; i++) {
+                const element = arrOfChildren[i];
+                let text = element.innerText;
+                var patt = new RegExp("PA [0-9][0-9]/[0-9][0-9][0-9][0-9]");
+                var res = patt.test(text);
+                if (res) {
+                    var patt = new RegExp("[0-9][0-9]/[0-9][0-9][0-9][0-9]");
+                    var res = text.match(patt);
+                    arr.push(res[0]);
+                }
+            }
             console.log(arr);
+            return arr;
         });
+        return arrayj;
     }
     catch (err) {
-        console.log('Declaration error');
+        await page.goto("C:/Users/6109693/OneDrive - Thomson Reuters Incorporated/Desktop/PGDAS-Puppeteer/Delay.html");
+        console.log('Declaration error', err);
     }
 }
-exports.check = check;
+exports.checkDeclaration = checkDeclaration;

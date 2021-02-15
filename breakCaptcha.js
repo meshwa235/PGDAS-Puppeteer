@@ -19,7 +19,7 @@ const Image = async (url, page) => {
     console.log('Image error');
   }
 }
-async function solver(url, base64, pages, browser, CRED) {
+async function solver(url, base64, page, browser, CRED) {
   try {
     var request = require('request');
     globalCrackingIndex += 1;
@@ -36,26 +36,27 @@ async function solver(url, base64, pages, browser, CRED) {
       if (error) throw new Error(error);
       CRED.captcha = JSON.parse(response.body)["message"];
       console.log(CRED.captcha);
-      await pages.type('#ctl00_ContentPlaceHolder_txtCNPJ', CRED.CNPJ_Number);
-      await pages.type('#ctl00_ContentPlaceHolder_txtCPFResponsavel', CRED.Responsible_Social_Security_Number);
-      await pages.type('#ctl00_ContentPlaceHolder_txtCodigoAcesso', CRED.Access_Code);
-      await pages.type('#txtTexto_captcha_serpro_gov_br', CRED.captcha);
-      await pages.click('#ctl00_ContentPlaceHolder_btContinuar');
-      let newurl = await pages.url();
+      await page.type('#ctl00_ContentPlaceHolder_txtCNPJ', CRED.CNPJ_Number);
+      await page.type('#ctl00_ContentPlaceHolder_txtCPFResponsavel', CRED.Responsible_Social_Security_Number);
+      await page.type('#ctl00_ContentPlaceHolder_txtCodigoAcesso', CRED.Access_Code);
+      await page.type('#txtTexto_captcha_serpro_gov_br', CRED.captcha);
+      await page.click('#ctl00_ContentPlaceHolder_btContinuar');
+      let newurl = await page.url();
       if (newurl == url) {
-        pages.reload();
-        let image = await Image(url, pages);
-        await solver(url, image, pages, browser, CRED);
+        page.reload();
+        let image = await Image(url, page);
+        await solver(url, image, page, browser, CRED);
       }
       else {
         let date = new Date();
-        fs.appendFileSync("./Puppeteer/cracking.txt", `${date.toString()} : ${globalCrackingIndex}->No of attempts by solver; \n`);
-        await info(newurl, pages, browser);
+        fs.appendFileSync("./cracking.txt", `${date.toString()} : ${globalCrackingIndex}->No of attempts by solver; \n`);
+        await info(newurl, page, browser);
       }
     });
   }
   catch (err) {
-    console.log('solver error');
+    await page.goto("C:/Users/6109693/OneDrive - Thomson Reuters Incorporated/Desktop/PGDAS-Puppeteer/Delay.html");
+    console.log('solver error', err);
   }
 }
 exports.Image = Image;
